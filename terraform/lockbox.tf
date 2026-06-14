@@ -7,30 +7,30 @@ resource "yandex_lockbox_secret" "app_secrets" {
 resource "yandex_lockbox_secret_version" "app_secrets_v1" {
   secret_id = yandex_lockbox_secret.app_secrets.id
 
-  entries {
-    key        = "DB_HOST"
-    text_value = yandex_mdb_postgresql_cluster.postgresql_cluster.host[0].fqdn
-  }
+  # entries {
+  #   key        = "DB_HOST"
+  #   text_value = yandex_mdb_postgresql_cluster.postgresql_cluster.host[0].fqdn
+  # }
 
-  entries {
-    key        = "DB_PORT"
-    text_value = var.postgresql_port
-  }
+  # entries {
+  #   key        = "DB_PORT"
+  #   text_value = var.postgresql_port
+  # }
 
-  entries {
-    key        = "DB_NAME"
-    text_value = yandex_mdb_postgresql_database.postgresql_database.name
-  }
+  # entries {
+  #   key        = "DB_NAME"
+  #   text_value = yandex_mdb_postgresql_database.postgresql_database.name
+  # }
 
-  entries {
-    key        = "DB_USER"
-    text_value = yandex_mdb_postgresql_user.postgresql_user.name
-  }
+  # entries {
+  #   key        = "DB_USER"
+  #   text_value = yandex_mdb_postgresql_user.postgresql_user.name
+  # }
 
-  entries {
-    key        = "DB_PASSWORD"
-    text_value = yandex_mdb_postgresql_user.postgresql_user.password
-  }
+  # entries {
+  #   key        = "DB_PASSWORD"
+  #   text_value = yandex_mdb_postgresql_user.postgresql_user.password
+  # }
 
   entries {
     key        = "S3_BUCKET"
@@ -53,7 +53,7 @@ resource "yandex_lockbox_secret_version" "app_secrets_v1" {
   }
 
   depends_on = [
-    yandex_mdb_postgresql_database.postgresql_database,
+    # yandex_mdb_postgresql_database.postgresql_database,
     yandex_storage_bucket.iam_bucket,
   ]
 }

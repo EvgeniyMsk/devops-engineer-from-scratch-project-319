@@ -1,0 +1,28 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: hexlet-project
+  namespace: hexlet-project
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hexlet-project
+  template:
+    metadata:
+      labels:
+        app: hexlet-project
+    containers:
+      - name: hexlet-project
+        image: hexlet-project:latest
+        ports:
+          - containerPort: 80
+        env:
+          - name: POSTGRES_USER
+            value: postgres
+          - name: POSTGRES_PASSWORD
+            value: postgres
+          - name: POSTGRES_DB
+            value: hexlet-project
+          - name: POSTGRES_PORT
+            value: 5432

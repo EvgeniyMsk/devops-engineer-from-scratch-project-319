@@ -1,0 +1,13 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: hexlet-project
+  namespace: hexlet-project
+spec:
+  selector:
+    app: hexlet-application
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: ClusterIP

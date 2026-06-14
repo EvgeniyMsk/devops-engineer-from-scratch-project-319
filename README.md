@@ -123,8 +123,9 @@ terraform output lockbox_secret_id
 
 ```
 terraform/
-├── versions.tf              # Terraform, провайдер, S3 backend
+├── main.tf                  # Точка входа конфигурации
 ├── providers.tf             # Провайдер yandex
+├── versions.tf              # Terraform, backend S3
 ├── variables.tf             # Входные переменные
 ├── data.tf                  # Data sources
 ├── network.tf               # VPC, подсеть, NAT, route table
@@ -143,7 +144,7 @@ terraform/
 - VPC `k8s-network`, подсеть `10.2.0.0/16` в `ru-central1-a`
 - NAT Gateway для исходящего трафика из подсети
 - PostgreSQL доступен из подсети K8s (порт 6432, pooler), без публичного IP
-- API Kubernetes доступен с IP из `home-ip` / `office-ip` (переменные)
+- API Kubernetes доступен с IP из `home_ip` / `office_ip` (переменные)
 
 ## Секреты
 
