@@ -1,4 +1,4 @@
-resource "yandex_vpc_network" "k8s-network" {
+resource "yandex_vpc_network" "k8s_network" {
   name        = "k8s-network"
   description = "Network for k8s cluster [Hexlet Project]"
   labels = {
@@ -6,7 +6,7 @@ resource "yandex_vpc_network" "k8s-network" {
   }
 }
 
-resource "yandex_vpc_subnet" "k8s-subnet" {
+resource "yandex_vpc_subnet" "k8s_subnet" {
   name           = "k8s-subnet"
   v4_cidr_blocks = ["10.2.0.0/16"]
   description    = "Subnet for k8s cluster [Hexlet Project]"
@@ -14,7 +14,7 @@ resource "yandex_vpc_subnet" "k8s-subnet" {
     environment = "production"
   }
   zone           = "ru-central1-a"
-  network_id     = yandex_vpc_network.k8s-network.id
+  network_id     = yandex_vpc_network.k8s_network.id
   route_table_id = yandex_vpc_route_table.rt.id
 }
 
@@ -27,7 +27,7 @@ resource "yandex_vpc_gateway" "nat_gateway" {
 resource "yandex_vpc_route_table" "rt" {
   name       = "nat-route-table"
   folder_id  = var.folder_id
-  network_id = yandex_vpc_network.k8s-network.id
+  network_id = yandex_vpc_network.k8s_network.id
 
   static_route {
     destination_prefix = "0.0.0.0/0"

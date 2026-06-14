@@ -1,12 +1,12 @@
 locals {
-  k8s_cluster_id    = yandex_kubernetes_cluster.k8s-cluster.id
+  k8s_cluster_id    = yandex_kubernetes_cluster.k8s_cluster.id
   k8s_cluster_label = "yc-managed-k8s-${local.k8s_cluster_id}"
   k8s_api_server = "https://${replace(
-    yandex_kubernetes_cluster.k8s-cluster.master[0].external_v4_endpoint,
+    yandex_kubernetes_cluster.k8s_cluster.master[0].external_v4_endpoint,
     "https://",
     "",
   )}"
-  k8s_ca_cert = yandex_kubernetes_cluster.k8s-cluster.master[0].cluster_ca_certificate
+  k8s_ca_cert = yandex_kubernetes_cluster.k8s_cluster.master[0].cluster_ca_certificate
 
   kubeconfig = <<-EOT
 apiVersion: v1
@@ -37,7 +37,7 @@ users:
       provideClusterInfo: false
 EOT
 
-  postgresql_connection_string = "postgresql://${var.postgresql_user}:${urlencode(var.postgresql_password)}@${yandex_mdb_postgresql_cluster.postgresql-cluster.host[0].fqdn}:${var.postgresql_port}/${var.postgresql_database}?sslmode=require"
+  postgresql_connection_string = "postgresql://${var.postgresql_user}:${urlencode(var.postgresql_password)}@${yandex_mdb_postgresql_cluster.postgresql_cluster.host[0].fqdn}:${var.postgresql_port}/${var.postgresql_database}?sslmode=require"
 
   s3_endpoint = "https://storage.yandexcloud.net"
 }
@@ -55,17 +55,17 @@ output "iam_token" {
 
 output "k8s_cluster_id" {
   description = "ID Kubernetes-кластера"
-  value       = yandex_kubernetes_cluster.k8s-cluster.id
+  value       = yandex_kubernetes_cluster.k8s_cluster.id
 }
 
 output "k8s_node_group_id" {
   description = "ID группы worker-нод Kubernetes"
-  value       = yandex_kubernetes_node_group.worker-nodes-a.id
+  value       = yandex_kubernetes_node_group.worker_nodes_a.id
 }
 
 output "postgresql_cluster_id" {
   description = "ID кластера PostgreSQL"
-  value       = yandex_mdb_postgresql_cluster.postgresql-cluster.id
+  value       = yandex_mdb_postgresql_cluster.postgresql_cluster.id
 }
 
 output "k8s_api_endpoint" {
@@ -81,23 +81,23 @@ output "postgresql_connection_string" {
 
 output "postgresql_cluster_fqdn" {
   description = "FQDN хоста PostgreSQL"
-  value       = yandex_mdb_postgresql_cluster.postgresql-cluster.host[0].fqdn
+  value       = yandex_mdb_postgresql_cluster.postgresql_cluster.host[0].fqdn
 }
 
 output "s3_bucket" {
   description = "Имя S3-бакета"
-  value       = yandex_storage_bucket.iam-bucket.bucket
+  value       = yandex_storage_bucket.iam_bucket.bucket
 }
 
 output "s3_access_key" {
   description = "Access key для S3"
-  value       = yandex_iam_service_account_static_access_key.iam-bucket-account-key.access_key
+  value       = yandex_iam_service_account_static_access_key.iam_bucket_account_key.access_key
   sensitive   = true
 }
 
 output "s3_secret_key" {
   description = "Secret key для S3"
-  value       = yandex_iam_service_account_static_access_key.iam-bucket-account-key.secret_key
+  value       = yandex_iam_service_account_static_access_key.iam_bucket_account_key.secret_key
   sensitive   = true
 }
 
@@ -108,5 +108,5 @@ output "s3_endpoint" {
 
 output "lockbox_secret_id" {
   description = "ID Lockbox-секрета с параметрами приложения (DB/S3)"
-  value       = yandex_lockbox_secret.app-secrets.id
+  value       = yandex_lockbox_secret.app_secrets.id
 }

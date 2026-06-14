@@ -1,7 +1,7 @@
-resource "yandex_vpc_security_group" "k8s-cluster-nodegroup-traffic" {
+resource "yandex_vpc_security_group" "k8s_cluster_nodegroup_traffic" {
   name        = "k8s-cluster-nodegroup-traffic"
   description = "Правила группы разрешают служебный трафик для кластера и групп узлов. Примените ее к кластеру и группам узлов."
-  network_id  = yandex_vpc_network.k8s-network.id
+  network_id  = yandex_vpc_network.k8s_network.id
   ingress {
     description       = "Правило для проверок состояния сетевого балансировщика нагрузки."
     from_port         = 0
@@ -30,10 +30,10 @@ resource "yandex_vpc_security_group" "k8s-cluster-nodegroup-traffic" {
   }
 }
 
-resource "yandex_vpc_security_group" "k8s-nodegroup-traffic" {
+resource "yandex_vpc_security_group" "k8s_nodegroup_traffic" {
   name        = "k8s-nodegroup-traffic"
   description = "Правила группы разрешают служебный трафик для групп узлов. Примените ее к группам узлов."
-  network_id  = yandex_vpc_network.k8s-network.id
+  network_id  = yandex_vpc_network.k8s_network.id
   ingress {
     description    = "Правило для входящего трафика, разрешающее передачу трафика между подами и сервисами."
     from_port      = 0
@@ -50,10 +50,10 @@ resource "yandex_vpc_security_group" "k8s-nodegroup-traffic" {
   }
 }
 
-resource "yandex_vpc_security_group" "k8s-services-access" {
+resource "yandex_vpc_security_group" "k8s_services_access" {
   name        = "k8s-services-access"
   description = "Правила группы разрешают подключение к сервисам из интернета. Примените ее к группам узлов."
-  network_id  = yandex_vpc_network.k8s-network.id
+  network_id  = yandex_vpc_network.k8s_network.id
   ingress {
     description    = "Правило для входящего трафика, разрешающее подключение к сервисам."
     from_port      = 30000
@@ -63,33 +63,33 @@ resource "yandex_vpc_security_group" "k8s-services-access" {
   }
 }
 
-resource "yandex_vpc_security_group" "k8s-ssh-access" {
+resource "yandex_vpc_security_group" "k8s_ssh_access" {
   name        = "k8s-ssh-access"
   description = "Правила группы разрешают подключение к узлам по SSH. Примените ее к группам узлов."
-  network_id  = yandex_vpc_network.k8s-network.id
+  network_id  = yandex_vpc_network.k8s_network.id
   ingress {
     description    = "Правило для входящего трафика, разрешающее подключение к узлам по SSH."
     port           = 22
     protocol       = "TCP"
-    v4_cidr_blocks = [var.home-ip, var.office-ip]
+    v4_cidr_blocks = [var.home_ip, var.office_ip]
   }
 }
 
-resource "yandex_vpc_security_group" "k8s-cluster-traffic" {
+resource "yandex_vpc_security_group" "k8s_cluster_traffic" {
   name        = "k8s-cluster-traffic"
   description = "Правила группы разрешают трафик для кластера. Примените ее к кластеру."
-  network_id  = yandex_vpc_network.k8s-network.id
+  network_id  = yandex_vpc_network.k8s_network.id
   ingress {
     description    = "Правило для входящего трафика, разрешающее доступ к API Kubernetes (порт 443)."
     port           = 443
     protocol       = "TCP"
-    v4_cidr_blocks = [var.home-ip, var.office-ip]
+    v4_cidr_blocks = [var.home_ip, var.office_ip]
   }
   ingress {
     description    = "Правило для входящего трафика, разрешающее доступ к API Kubernetes (порт 6443)."
     port           = 6443
     protocol       = "TCP"
-    v4_cidr_blocks = [var.home-ip, var.office-ip]
+    v4_cidr_blocks = [var.home_ip, var.office_ip]
   }
   egress {
     description    = "Правило для исходящего трафика, разрешающее передачу трафика между мастером и подами metric-server."
@@ -105,10 +105,10 @@ resource "yandex_vpc_security_group" "k8s-cluster-traffic" {
   }
 }
 
-resource "yandex_vpc_security_group" "postgresql-traffic" {
+resource "yandex_vpc_security_group" "postgresql_traffic" {
   name        = "postgresql-traffic"
   description = "Правила группы разрешают трафик для PostgreSQL. Примените ее к кластеру."
-  network_id  = yandex_vpc_network.k8s-network.id
+  network_id  = yandex_vpc_network.k8s_network.id
   ingress {
     description    = "PostgreSQL из подсети K8s (6432 — pooler)"
     port           = 6432
@@ -119,7 +119,7 @@ resource "yandex_vpc_security_group" "postgresql-traffic" {
     description    = "PostgreSQL из домашней подсети (6432 — pooler)"
     port           = 6432
     protocol       = "TCP"
-    v4_cidr_blocks = [var.home-ip, var.office-ip]
+    v4_cidr_blocks = [var.home_ip, var.office_ip]
   }
   egress {
     description    = "Исходящий трафик"

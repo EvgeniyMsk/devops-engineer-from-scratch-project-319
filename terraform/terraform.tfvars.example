@@ -8,5 +8,5 @@ yc_cli_path = "/usr/local/bin/yc"
 yc_profile  = "default"
 
 # IP для доступа к API Kubernetes и SSH (CIDR /32)
-# home-ip   = "YOUR.PUBLIC.IP/32"
-# office-ip = "OFFICE.PUBLIC.IP/32"
+# home_ip   = "YOUR.PUBLIC.IP/32"
+# office_ip = "OFFICE.PUBLIC.IP/32"
