@@ -1,0 +1,12 @@
+# Скопируйте в terraform.tfvars и задайте свои значения:
+# cp terraform.tfvars.example terraform.tfvars
+
+postgresql_password = "change-me"
+
+# Путь к yc CLI (для kubeconfig в формате yc get-credentials)
+yc_cli_path = "/usr/local/bin/yc"
+yc_profile  = "default"
+
+# IP для доступа к API Kubernetes и SSH (CIDR /32)
+# home-ip   = "YOUR.PUBLIC.IP/32"
+# office-ip = "OFFICE.PUBLIC.IP/32"

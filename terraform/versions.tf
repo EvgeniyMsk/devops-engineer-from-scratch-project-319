@@ -1,7 +1,10 @@
 terraform {
+  required_version = ">= 1.5.0"
+
   required_providers {
     yandex = {
-      source = "yandex-cloud/yandex"
+      source  = "yandex-cloud/yandex"
+      version = ">= 0.130.0"
     }
   }
 
@@ -13,9 +16,4 @@ terraform {
     skip_region_validation      = true
     skip_credentials_validation = true
   }
-}
-
-provider "yandex" {
-  folder_id = var.folder_id
-  zone      = var.zone
 }

@@ -19,5 +19,41 @@ variable "home-ip" {
 variable "office-ip" {
   description = "IP адрес офиса"
   type        = string
-  default     = "89.124.73.57/32"
+  default     = "178.177.19.99/32"
+}
+
+variable "postgresql_user" {
+  description = "Имя пользователя PostgreSQL"
+  type        = string
+  default     = "postgresql-user"
+}
+
+variable "postgresql_database" {
+  description = "Имя базы данных PostgreSQL"
+  type        = string
+  default     = "postgresql-database"
+}
+
+variable "postgresql_password" {
+  description = "Пароль пользователя PostgreSQL (задайте в terraform.tfvars, попадает в Lockbox)"
+  type        = string
+  sensitive   = true
+}
+
+variable "postgresql_port" {
+  description = "Порт подключения к PostgreSQL через pooler"
+  type        = string
+  default     = "6432"
+}
+
+variable "yc_cli_path" {
+  description = "Путь к CLI yc для kubeconfig (как в yc get-credentials)"
+  type        = string
+  default     = "yc"
+}
+
+variable "yc_profile" {
+  description = "Профиль yc для kubeconfig"
+  type        = string
+  default     = "default"
 }
