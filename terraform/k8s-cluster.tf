@@ -1,0 +1,47 @@
+resource "yandex_kubernetes_cluster" "k8s-cluster" {
+  name = "k8s-cluster"
+  description = "Kubernetes cluster [Hexlet Project]"
+  service_account_id = yandex_iam_service_account.resource-manager-account.id
+  node_service_account_id = yandex_iam_service_account.resource-manager-account.id
+  cluster_ipv4_range = "10.96.0.0/16"
+  service_ipv4_range = "10.112.0.0/16"
+  network_id = yandex_vpc_network.k8s-network.id
+  master {
+    master_location {
+      zone      = "ru-central1-a"
+      subnet_id = yandex_vpc_subnet.k8s-subnet.id
+    }
+    security_group_ids = [
+      yandex_vpc_security_group.k8s-cluster-nodegroup-traffic.id,
+      yandex_vpc_security_group.k8s-cluster-traffic.id
+    ]
+    public_ip = true
+  }
+}
+
+resource "yandex_kubernetes_node_group" "worker-nodes-a" {
+  cluster_id = yandex_kubernetes_cluster.k8s-cluster.id
+  name       = "worker-nodes-a"
+  allocation_policy {
+    location {
+      zone = "ru-central1-a"
+    }
+  }
+  scale_policy {
+    fixed_scale {
+      size = 1
+    }
+  }
+  instance_template {
+    network_interface {
+      nat                = true
+      subnet_ids         = [yandex_vpc_subnet.k8s-subnet.id]
+      security_group_ids = [
+        yandex_vpc_security_group.k8s-cluster-nodegroup-traffic.id,
+        yandex_vpc_security_group.k8s-nodegroup-traffic.id,
+        yandex_vpc_security_group.k8s-services-access.id,
+        yandex_vpc_security_group.k8s-ssh-access.id
+      ]
+    }
+  }
+}
