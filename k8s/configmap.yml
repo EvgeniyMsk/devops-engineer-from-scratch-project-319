@@ -1,0 +1,11 @@
+kind: ConfigMap
+apiVersion: v1
+namespace: hexlet-project
+metadata:
+  name: hexlet-project-config
+data:
+  STORAGE_S3_BUCKET: hexlet-bucket
+  STORAGE_S3_REGION: ru-central1
+  STORAGE_S3_ENDPOINT: https://storage.yandexcloud.net
+  MANAGEMENT_SERVER_PORT: 8081
+  JAVA_OPTS: -Xms256m -Xmx512m -Dspring.profiles.active=prod

@@ -8,21 +8,65 @@ spec:
   selector:
     matchLabels:
       app: hexlet-project
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
   template:
     metadata:
       labels:
         app: hexlet-project
-    containers:
-      - name: hexlet-project
-        image: hexlet-project:latest
+    spec:
+      serviceAccountName: my-service-account
+      terminationGracePeriodSeconds: 45
+      securityContext:
+        runAsNonRoot: true          # Запрет запуска от root
+        runAsUser: 1000             # Запуск от пользователя 1000
+        runAsGroup: 3000            # Группа 3000
+        fsGroup: 2000               # Группа для томов
+        seccompProfile:             # Обязательно для restricted
+          type: RuntimeDefault
+      containers:
+      - name: project-devops-deploy
+        image: cr.yandex/crpd2isbgl7k3puo75s1/project-devops-deploy
+        securityContext:  # Container-level
+          runAsNonRoot: true
+          runAsUser: 1001
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+              - ALL
+        imagePullPolicy: IfNotPresent
         ports:
-          - containerPort: 80
-        env:
-          - name: POSTGRES_USER
-            value: postgres
-          - name: POSTGRES_PASSWORD
-            value: postgres
-          - name: POSTGRES_DB
-            value: hexlet-project
-          - name: POSTGRES_PORT
-            value: 5432
+          - containerPort: 8080
+        # env:
+        #   - name: POSTGRES_USER
+        #     valueFrom:
+        #       secretKeyRef:
+        #         name: app-credentials 
+        #         key: DB_USER
+        #   - name: POSTGRES_PASSWORD
+        #     valueFrom:
+        #       secretKeyRef:
+        #         name: app-credentials
+        #         key: DB_PASSWORD
+        lifecycle:
+            preStop:
+              exec:
+                command: ["/bin/sh", "-c", "sleep 10"]
+      
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 8
+          periodSeconds: 8
+          failureThreshold: 3
+        resources:
+            requests:
+              memory: '350Mi'
+              cpu: 100m
+            limits:
+              memory: '500Mi'
+              cpu: 200m
