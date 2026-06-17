@@ -2,6 +2,7 @@
 # cp terraform.tfvars.example terraform.tfvars
 
 postgresql_password = "change-me"
+docker_oauth_token  = "change-me"
 
 # Путь к yc CLI (для kubeconfig в формате yc get-credentials)
 yc_cli_path = "/usr/local/bin/yc"

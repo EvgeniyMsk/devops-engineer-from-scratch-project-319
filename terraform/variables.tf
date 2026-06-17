@@ -57,3 +57,9 @@ variable "yc_profile" {
   type        = string
   default     = "default"
 }
+
+variable "docker_oauth_token" {
+  description = "OAuth-токен для доступа к Docker Registry (попадает в Lockbox)"
+  type        = string
+  sensitive   = true
+}

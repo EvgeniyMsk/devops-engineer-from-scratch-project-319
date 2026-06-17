@@ -7,6 +7,10 @@ resource "yandex_lockbox_secret" "app_secrets" {
 resource "yandex_lockbox_secret_version" "app_secrets_v1" {
   secret_id = yandex_lockbox_secret.app_secrets.id
 
+  entries {
+    key        = "docker_oauth_token"
+    text_value = var.docker_oauth_token
+  }
   # entries {
   #   key        = "DB_HOST"
   #   text_value = yandex_mdb_postgresql_cluster.postgresql_cluster.host[0].fqdn

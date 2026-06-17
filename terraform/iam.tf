@@ -44,3 +44,13 @@ resource "yandex_resourcemanager_folder_iam_member" "images_puller" {
   role      = "container-registry.images.puller"
   member    = "serviceAccount:${yandex_iam_service_account.resource_manager_account.id}"
 }
+
+resource "yandex_iam_service_account" "eso_service_account" {
+  name = "eso-service-account"
+}
+
+resource "yandex_lockbox_secret_iam_member" "app_secrets_eso_viewer" {
+  secret_id = yandex_lockbox_secret.app_secrets.id
+  role      = "lockbox.payloadViewer"
+  member    = "serviceAccount:${yandex_iam_service_account.eso_service_account.id}"
+}
