@@ -1,7 +1,7 @@
 .PHONY: secret
 
 secret_file:
-	SA_ID=aje2195hs9okj6vn76fl && \
+	SA_ID=$$(yc iam service-account get eso-service-account --format json | jq -r .id) && \
 	LOCKBOX_ID=$$(terraform -chdir=../terraform output -raw lockbox_secret_id) && \
 	yc lockbox secret add-access-binding \
 		--id "$$LOCKBOX_ID" \
