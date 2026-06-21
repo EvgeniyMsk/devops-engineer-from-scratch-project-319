@@ -54,3 +54,16 @@ resource "yandex_lockbox_secret_iam_member" "app_secrets_eso_viewer" {
   role      = "lockbox.payloadViewer"
   member    = "serviceAccount:${yandex_iam_service_account.eso_service_account.id}"
 }
+
+resource "yandex_storage_bucket_iam_binding" "iam_bucket_admin" {
+  bucket = yandex_storage_bucket.iam_bucket.bucket
+  role   = "storage.admin"
+
+  members = [
+    "serviceAccount:${yandex_iam_service_account.iam_bucket_account.id}",
+  ]
+
+  depends_on = [
+    yandex_storage_bucket.iam_bucket,
+  ]
+}

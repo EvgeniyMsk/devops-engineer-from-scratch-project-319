@@ -19,8 +19,7 @@
 #       subnet_id = yandex_vpc_subnet.k8s_subnet.id
 #     }
 #     security_group_ids = [
-#       yandex_vpc_security_group.k8s_cluster_nodegroup_traffic.id,
-#       yandex_vpc_security_group.k8s_cluster_traffic.id
+#       yandex_vpc_security_group.k8s_nodegroup_traffic.id
 #     ]
 #     public_ip = true
 #   }
@@ -60,10 +59,7 @@
 #       nat        = true
 #       subnet_ids = [yandex_vpc_subnet.k8s_subnet.id]
 #       security_group_ids = [
-#         yandex_vpc_security_group.k8s_cluster_nodegroup_traffic.id,
-#         yandex_vpc_security_group.k8s_nodegroup_traffic.id,
-#         yandex_vpc_security_group.k8s_services_access.id,
-#         yandex_vpc_security_group.k8s_ssh_access.id
+#         yandex_vpc_security_group.k8s_nodegroup_traffic.id
 #       ]
 #     }
 #   }

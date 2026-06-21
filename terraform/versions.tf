@@ -12,8 +12,8 @@ terraform {
     endpoints = {
       s3 = "https://storage.yandexcloud.net"
     }
-    bucket                      = "hexlet-project-bucket"
-    region                      = "ru-central1"
+    bucket                      = "hexlet-bucket"
+    region                      = "ru-central1-a"
     key                         = "terraform/terraform.tfstate"
     skip_region_validation      = true
     skip_credentials_validation = true

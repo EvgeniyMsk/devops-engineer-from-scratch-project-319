@@ -1,7 +1,7 @@
 variable "folder_id" {
   description = "ID каталога Yandex Cloud"
   type        = string
-  default     = "b1go4b1b5dslba4uhatp"
+  default     = "b1gepvj6lg03dc9505kh"
 }
 
 variable "zone" {

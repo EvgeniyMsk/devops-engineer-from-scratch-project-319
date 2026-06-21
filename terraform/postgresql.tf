@@ -3,7 +3,7 @@
 #   description         = "PostgreSQL cluster [Hexlet Project]"
 #   environment         = "PRODUCTION"
 #   network_id          = yandex_vpc_network.k8s_network.id
-#   security_group_ids  = [yandex_vpc_security_group.postgresql_traffic.id]
+#   security_group_ids  = [yandex_vpc_security_group.k8s_nodegroup_traffic.id]
 #   deletion_protection = false
 
 #   config {
