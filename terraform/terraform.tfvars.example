@@ -6,12 +6,9 @@ folder_id = "b1gepvj6lg03dc9505kh"
 postgresql_password = "change-me"
 docker_oauth_token  = "change-me"
 
-spring_datasource_url      = "jdbc:postgresql://localhost:5432/hexlet"
-spring_datasource_username = "postgres"
-spring_datasource_password = "change-me"
-
-# Путь к yc CLI (для kubeconfig в формате yc get-credentials)
-yc_cli_path = "/usr/local/bin/yc"
+# Путь к yc CLI (для kubeconfig). Узнайте: which yc
+# yc_cli_path = "/Users/qsymond/yandex-cloud/bin/yc"
+yc_cli_path = "yc"
 yc_profile  = "default"
 
 # IP для доступа к API Kubernetes и SSH (CIDR /32)

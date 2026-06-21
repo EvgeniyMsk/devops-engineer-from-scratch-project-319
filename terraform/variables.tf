@@ -87,21 +87,3 @@ variable "storage_s3_bucket" {
   type        = string
   default     = "hexlet-bucket"
 }
-
-variable "spring_datasource_url" {
-  description = "URL для подключения к PostgreSQL"
-  type        = string
-  default     = "jdbc:postgresql://138.16.178.207:5432/bulletins"
-}
-
-variable "spring_datasource_username" {
-  description = "Имя пользователя PostgreSQL"
-  type        = string
-  default     = "postgres"
-}
-
-variable "spring_datasource_password" {
-  description = "Пароль пользователя PostgreSQL"
-  type        = string
-  sensitive   = true
-}

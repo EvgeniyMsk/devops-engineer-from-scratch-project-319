@@ -74,6 +74,22 @@ readinessProbe:
   periodSeconds: 8
   failureThreshold: 3
 
+livenessProbe:
+  httpGet:
+    path: /actuator/health
+    port: 9090
+  initialDelaySeconds: 30
+  periodSeconds: 15
+  failureThreshold: 3
+
+startupProbe:
+  httpGet:
+    path: /actuator/health
+    port: 9090
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  failureThreshold: 12
+
 lifecycle:
   preStop:
     command:
@@ -87,17 +103,30 @@ service:
   targetPort: 8080
   portName: http
 
+ingress:
+  enabled: true
+  className: nginx
+  annotations: {}
+  # Домен с A-записью на EXTERNAL-IP ingress-nginx-controller (обязателен для TLS)
+  host: "k8s.devops-campus.ru"
+  path: /
+  pathType: Prefix
+  tls:
+    enabled: true
+    secretName: hexlet-project-tls
+  certManager:
+    enabled: true
+    clusterIssuer: letsencrypt-prod
+    email: "logvinov.evgeniy@yandex.ru"        # email для Let's Encrypt
+    staging: false    # true — тестовый сервер LE; false — боевой
+
 autoscaling:
   enabled: true
   minReplicas: 1
   maxReplicas: 2
   metrics:
-    - type: Resource
-      resource:
-        name: cpu
-        target:
-          type: Utilization
-          averageUtilization: 20
+    # Только memory: CPU-метрика на Yandex MKS metrics-server v0.7.2
+    # отдаётся в kubectl top, но HPA получает <unknown> (currentMetrics type: "").
     - type: Resource
       resource:
         name: memory
@@ -122,7 +151,6 @@ externalSecrets:
   ycAuth:
     secretName: yc-auth
     key: authorized-key
-    # Заполните через values.secrets.yaml (make secrets-values) или вручную из authorized-key.json
     authorizedKey: {}
 
 nodeSelector: {}

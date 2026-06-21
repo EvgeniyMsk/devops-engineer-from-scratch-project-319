@@ -45,6 +45,27 @@ resource "yandex_resourcemanager_folder_iam_member" "images_puller" {
   member    = "serviceAccount:${yandex_iam_service_account.resource_manager_account.id}"
 }
 
+resource "yandex_resourcemanager_folder_iam_member" "load_balancer_admin" {
+  # Нужна для Service type=LoadBalancer (Ingress NGINX → Network Load Balancer).
+  folder_id = var.folder_id
+  role      = "load-balancer.admin"
+  member    = "serviceAccount:${yandex_iam_service_account.resource_manager_account.id}"
+}
+
+resource "yandex_resourcemanager_folder_iam_member" "monitoring_editor" {
+  # Метрики кластера в Yandex Monitoring / Managed Prometheus.
+  folder_id = var.folder_id
+  role      = "monitoring.editor"
+  member    = "serviceAccount:${yandex_iam_service_account.resource_manager_account.id}"
+}
+
+resource "yandex_resourcemanager_folder_iam_member" "logging_writer" {
+  # Fluent Bit → Cloud Logging.
+  folder_id = var.folder_id
+  role      = "logging.writer"
+  member    = "serviceAccount:${yandex_iam_service_account.resource_manager_account.id}"
+}
+
 resource "yandex_iam_service_account" "eso_service_account" {
   name = "eso-service-account"
 }

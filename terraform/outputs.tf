@@ -1,51 +1,52 @@
 locals {
-  #   k8s_cluster_id    = yandex_kubernetes_cluster.k8s_cluster.id
-  #   k8s_cluster_label = "yc-managed-k8s-${local.k8s_cluster_id}"
-  #   k8s_api_server = "https://${replace(
-  #     yandex_kubernetes_cluster.k8s_cluster.master[0].external_v4_endpoint,
-  #     "https://",
-  #     "",
-  #   )}"
-  #   k8s_ca_cert = yandex_kubernetes_cluster.k8s_cluster.master[0].cluster_ca_certificate
+  k8s_cluster_id    = yandex_kubernetes_cluster.k8s_cluster.id
+  k8s_cluster_label = "yc-managed-k8s-${local.k8s_cluster_id}"
+  k8s_api_server = "https://${replace(
+    yandex_kubernetes_cluster.k8s_cluster.master[0].external_v4_endpoint,
+    "https://",
+    "",
+  )}"
+  k8s_ca_cert = yandex_kubernetes_cluster.k8s_cluster.master[0].cluster_ca_certificate
 
-  #   kubeconfig = <<-EOT
-  # apiVersion: v1
-  # clusters:
-  # - cluster:
-  #     certificate-authority-data: ${base64encode(local.k8s_ca_cert)}
-  #     server: ${local.k8s_api_server}
-  #   name: ${local.k8s_cluster_label}
-  # contexts:
-  # - context:
-  #     cluster: ${local.k8s_cluster_label}
-  #     user: ${local.k8s_cluster_label}
-  #   name: yc-k8s-cluster
-  # current-context: yc-k8s-cluster
-  # kind: Config
-  # preferences: {}
-  # users:
-  # - name: ${local.k8s_cluster_label}
-  #   user:
-  #     exec:
-  #       apiVersion: client.authentication.k8s.io/v1beta1
-  #       args:
-  #       - k8s
-  #       - create-token
-  #       - --profile=${var.yc_profile}
-  #       command: ${var.yc_cli_path}
-  #       env: null
-  #       provideClusterInfo: false
-  # EOT
+  kubeconfig = <<-EOT
+apiVersion: v1
+clusters:
+- cluster:
+    certificate-authority-data: ${base64encode(local.k8s_ca_cert)}
+    server: ${local.k8s_api_server}
+  name: ${local.k8s_cluster_label}
+contexts:
+- context:
+    cluster: ${local.k8s_cluster_label}
+    user: ${local.k8s_cluster_label}
+  name: yc-k8s-cluster
+current-context: yc-k8s-cluster
+kind: Config
+preferences: {}
+users:
+- name: ${local.k8s_cluster_label}
+  user:
+    exec:
+      apiVersion: client.authentication.k8s.io/v1beta1
+      args:
+      - k8s
+      - create-token
+      - --profile=${var.yc_profile}
+      command: ${var.yc_cli_path}
+      env: null
+      provideClusterInfo: false
+EOT
 
-  #   postgresql_connection_string = "postgresql://${var.postgresql_user}:${urlencode(var.postgresql_password)}@${yandex_mdb_postgresql_cluster.postgresql_cluster.host[0].fqdn}:${var.postgresql_port}/${var.postgresql_database}?sslmode=require"
+  postgresql_connection_string = "postgresql://${var.postgresql_user}:${urlencode(var.postgresql_password)}@${yandex_mdb_postgresql_cluster.postgresql_cluster.host[0].fqdn}:${var.postgresql_port}/${var.postgresql_database}?sslmode=require"
 
   s3_endpoint = "https://storage.yandexcloud.net"
 }
 
-# output "kubeconfig" {
-#   description = "Kubeconfig в формате yc get-credentials"
-#   value       = local.kubeconfig
-# }
+output "kubeconfig" {
+  description = "Kubeconfig в формате yc get-credentials"
+  value       = local.kubeconfig
+  sensitive   = true
+}
 
 output "iam_token" {
   description = "IAM-токен для kubectl (действует ограниченное время)"
@@ -53,36 +54,36 @@ output "iam_token" {
   sensitive   = true
 }
 
-# output "k8s_cluster_id" {
-#   description = "ID Kubernetes-кластера"
-#   value       = yandex_kubernetes_cluster.k8s_cluster.id
-# }
+output "k8s_cluster_id" {
+  description = "ID Kubernetes-кластера"
+  value       = yandex_kubernetes_cluster.k8s_cluster.id
+}
 
-# output "k8s_node_group_id" {
-#   description = "ID группы worker-нод Kubernetes"
-#   value       = yandex_kubernetes_node_group.worker_nodes_a.id
-# }
+output "k8s_node_group_id" {
+  description = "ID группы worker-нод Kubernetes"
+  value       = yandex_kubernetes_node_group.worker_nodes_a.id
+}
 
-# output "postgresql_cluster_id" {
-#   description = "ID кластера PostgreSQL"
-#   value       = yandex_mdb_postgresql_cluster.postgresql_cluster.id
-# }
+output "postgresql_cluster_id" {
+  description = "ID кластера PostgreSQL"
+  value       = yandex_mdb_postgresql_cluster.postgresql_cluster.id
+}
 
-# output "k8s_api_endpoint" {
-#   description = "Endpoint Kubernetes API"
-#   value       = local.k8s_api_server
-# }
+output "k8s_api_endpoint" {
+  description = "Endpoint Kubernetes API"
+  value       = local.k8s_api_server
+}
 
-# output "postgresql_connection_string" {
-#   description = "Строка подключения к PostgreSQL"
-#   value       = local.postgresql_connection_string
-#   sensitive   = true
-# }
+output "postgresql_connection_string" {
+  description = "Строка подключения к PostgreSQL"
+  value       = local.postgresql_connection_string
+  sensitive   = true
+}
 
-# output "postgresql_cluster_fqdn" {
-#   description = "FQDN хоста PostgreSQL"
-#   value       = yandex_mdb_postgresql_cluster.postgresql_cluster.host[0].fqdn
-# }
+output "postgresql_cluster_fqdn" {
+  description = "FQDN хоста PostgreSQL"
+  value       = yandex_mdb_postgresql_cluster.postgresql_cluster.host[0].fqdn
+}
 
 output "s3_bucket" {
   description = "Имя S3-бакета"
@@ -109,4 +110,14 @@ output "s3_endpoint" {
 output "lockbox_secret_id" {
   description = "ID Lockbox-секрета с параметрами приложения (DB/S3)"
   value       = yandex_lockbox_secret.app_secrets.id
+}
+
+output "log_group_id" {
+  description = "ID лог-группы Cloud Logging для Fluent Bit"
+  value       = yandex_logging_group.k8s_logs.id
+}
+
+output "log_group_name" {
+  description = "Имя лог-группы Cloud Logging"
+  value       = yandex_logging_group.k8s_logs.name
 }

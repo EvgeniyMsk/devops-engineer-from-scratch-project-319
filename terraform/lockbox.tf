@@ -29,20 +29,21 @@ resource "yandex_lockbox_secret_version" "app_secrets_v1" {
   }
   entries {
     key        = "SPRING_DATASOURCE_URL"
-    text_value = var.spring_datasource_url
+    text_value = "jdbc:postgresql://${yandex_mdb_postgresql_cluster.postgresql_cluster.host[0].fqdn}:${var.postgresql_port}/${var.postgresql_database}?sslmode=require"
   }
   entries {
     key        = "SPRING_DATASOURCE_USERNAME"
-    text_value = var.spring_datasource_username
+    text_value = var.postgresql_user
   }
   entries {
     key        = "SPRING_DATASOURCE_PASSWORD"
-    text_value = var.spring_datasource_password
+    text_value = var.postgresql_password
   }
 
   depends_on = [
     yandex_iam_service_account_static_access_key.iam_bucket_account_key,
     yandex_storage_bucket.iam_bucket,
+    yandex_mdb_postgresql_database.postgresql_database,
   ]
 }
 

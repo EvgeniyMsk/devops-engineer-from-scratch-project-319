@@ -44,6 +44,13 @@ resource "yandex_vpc_security_group" "k8s_nodegroup_traffic" {
     v4_cidr_blocks = ["10.96.0.0/16", "10.112.0.0/16"]
   }
   ingress {
+    description    = "HTTP/HTTPS для Ingress LoadBalancer"
+    from_port      = 80
+    to_port        = 443
+    protocol       = "TCP"
+    v4_cidr_blocks = ["0.0.0.0/0"]
+  }
+  ingress {
     description    = "NodePort сервисы"
     from_port      = 30000
     to_port        = 32767
