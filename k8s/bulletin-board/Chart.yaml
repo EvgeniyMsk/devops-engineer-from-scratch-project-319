@@ -1,0 +1,6 @@
+apiVersion: v2
+name: bulletin-board
+description: Helm chart for Hexlet bulletin board application
+type: application
+version: 0.1.0
+appVersion: "1.0.0"

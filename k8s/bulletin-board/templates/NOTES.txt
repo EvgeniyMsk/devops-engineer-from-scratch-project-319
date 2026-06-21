@@ -1,0 +1,22 @@
+1. Get the application URL by running these commands:
+{{- if contains "NodePort" .Values.service.type }}
+  export NODE_PORT=$(kubectl get --namespace {{ include "bulletin-board.namespace" . }} -o jsonpath="{.spec.ports[0].nodePort}" services {{ include "bulletin-board.fullname" . }})
+  export NODE_IP=$(kubectl get nodes --namespace {{ include "bulletin-board.namespace" . }} -o jsonpath="{.items[0].status.addresses[0].address}")
+  echo http://$NODE_IP:$NODE_PORT
+{{- else if contains "LoadBalancer" .Values.service.type }}
+  NOTE: It may take a few minutes for the LoadBalancer IP to be available.
+  kubectl get --namespace {{ include "bulletin-board.namespace" . }} svc -w {{ include "bulletin-board.fullname" . }}
+{{- else if contains "ClusterIP" .Values.service.type }}
+  kubectl port-forward --namespace {{ include "bulletin-board.namespace" . }} svc/{{ include "bulletin-board.fullname" . }} {{ .Values.service.port }}:{{ .Values.service.port }}
+  echo "Visit http://127.0.0.1:{{ .Values.service.port }}"
+{{- end }}
+
+2. Create Yandex Cloud auth secret via Helm values:
+   cd k8s && make secret_file && make secrets-values
+   helm upgrade --install bulletin-board ./bulletin-board \
+     -f values.yaml -f values.secrets.yaml -n hexlet-project --create-namespace
+
+   Or: make secret   # secret_file + secrets-values + helm upgrade
+
+3. Update externalSecrets.lockboxSecretId in values.yaml after terraform apply:
+   terraform -chdir=../terraform output -raw lockbox_secret_id

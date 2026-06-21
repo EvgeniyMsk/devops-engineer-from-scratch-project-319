@@ -1,0 +1,125 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "bulletin-board.fullname" . }}
+  namespace: {{ include "bulletin-board.namespace" . }}
+  labels:
+    {{- include "bulletin-board.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "bulletin-board.selectorLabels" . | nindent 6 }}
+  strategy:
+    type: {{ .Values.strategy.type }}
+    rollingUpdate:
+      maxSurge: {{ .Values.strategy.rollingUpdate.maxSurge }}
+      maxUnavailable: {{ .Values.strategy.rollingUpdate.maxUnavailable }}
+  template:
+    metadata:
+      labels:
+        {{- include "bulletin-board.selectorLabels" . | nindent 8 }}
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    spec:
+      serviceAccountName: {{ .Values.serviceAccount.name }}
+      terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
+      {{- with .Values.podSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: {{ .Values.containerName }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          {{- with .Values.containerSecurityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          ports:
+            - containerPort: {{ .Values.containerPort }}
+          env:
+            - name: STORAGE_S3_ENDPOINT
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.appCredentialsSecretName }}
+                  key: STORAGE_S3_ENDPOINT
+            - name: STORAGE_S3_BUCKET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.appCredentialsSecretName }}
+                  key: STORAGE_S3_BUCKET
+            - name: STORAGE_S3_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.appCredentialsSecretName }}
+                  key: STORAGE_S3_ACCESS_KEY
+            - name: STORAGE_S3_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.appCredentialsSecretName }}
+                  key: STORAGE_S3_SECRET_KEY
+            - name: SPRING_DATASOURCE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.appCredentialsSecretName }}
+                  key: SPRING_DATASOURCE_URL
+            - name: SPRING_DATASOURCE_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.appCredentialsSecretName }}
+                  key: SPRING_DATASOURCE_USERNAME
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.appCredentialsSecretName }}
+                  key: SPRING_DATASOURCE_PASSWORD
+            - name: SPRING_PROFILES_ACTIVE
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "bulletin-board.configMapName" . }}
+                  key: SPRING_PROFILES_ACTIVE
+            - name: JAVA_OPTS
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "bulletin-board.configMapName" . }}
+                  key: JAVA_OPTS
+            - name: MANAGEMENT_SERVER_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "bulletin-board.configMapName" . }}
+                  key: MANAGEMENT_SERVER_PORT
+            - name: STORAGE_S3_REGION
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "bulletin-board.configMapName" . }}
+                  key: STORAGE_S3_REGION
+          {{- with .Values.lifecycle.preStop }}
+          lifecycle:
+            preStop:
+              exec:
+                command:
+                  {{- toYaml .command | nindent 18 }}
+          {{- end }}
+          readinessProbe:
+            {{- toYaml .Values.readinessProbe | nindent 12 }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

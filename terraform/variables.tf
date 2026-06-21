@@ -70,6 +70,18 @@ variable "storage_s3_endpoint" {
   default     = "https://storage.yandexcloud.net"
 }
 
+# variable "storage_s3_access_key" {
+#   description = "Access key для S3"
+#   type        = string
+#   sensitive   = true
+# }
+
+# variable "storage_s3_secret_key" {
+#   description = "Secret key для S3"
+#   type        = string
+#   sensitive   = true
+# }
+
 variable "storage_s3_bucket" {
   description = "Имя S3-бакета"
   type        = string
@@ -92,4 +104,4 @@ variable "spring_datasource_password" {
   description = "Пароль пользователя PostgreSQL"
   type        = string
   sensitive   = true
-} 
+}
