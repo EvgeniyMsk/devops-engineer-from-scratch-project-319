@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Проверка запросов для алертов Monitoring (доступность, 5xx, latency, restarts, нагрузка).
+# Проверка запросов алертов Monitoring
 set -euo pipefail
 
 FOLDER_ID="${FOLDER_ID:-b1gepvj6lg03dc9505kh}"
@@ -101,4 +101,4 @@ check_query "9. CPU master" \
   "\"master.cpu.utilization_percent\"{service=\"managed-kubernetes\", cluster_id=\"k8s-cluster\"}" \
   "AVG"
 
-echo "Инструкция по созданию алертов: docs/alerts-setup.md"
+echo "Готово."

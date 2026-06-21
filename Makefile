@@ -216,7 +216,7 @@ rollout-status: ## Проверить статус rolling update Deployment
 	kubectl rollout status deployment/hexlet-project -n $(HELM_NAMESPACE) --timeout=5m
 	kubectl get pods -n $(HELM_NAMESPACE) -o wide
 
-check-monitoring-queries: ## Проверить доступность метрик MKS (перед созданием алертов)
+check-monitoring-queries: ## Проверить запросы алертов Monitoring
 	@chmod +x scripts/check-monitoring-queries.sh
 	@FOLDER_ID=$$($(TF) output -raw folder_id 2>/dev/null || echo b1gepvj6lg03dc9505kh); \
 	CLUSTER_ID=$$($(TF) output -raw k8s_cluster_id 2>/dev/null || echo catb3ouu6c06vh9fofit); \

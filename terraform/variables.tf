@@ -95,7 +95,7 @@ variable "log_group_name" {
 }
 
 variable "log_retention_period" {
-  description = "Срок хранения логов (ISO 8601 duration, напр. 168h = 7 дней)"
+  description = "Срок хранения логов (например 168h = 7 дней)"
   type        = string
   default     = "168h"
 }
