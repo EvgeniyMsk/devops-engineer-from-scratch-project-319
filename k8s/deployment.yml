@@ -29,7 +29,7 @@ spec:
           type: RuntimeDefault
       containers:
       - name: project-devops-deploy
-        image: cr.yandex/crpd2isbgl7k3puo75s1/project-devops-deploy
+        image: cr.yandex/crpd2isbgl7k3puo75s1/project-devops-deploy:latest
         securityContext:  # Container-level
           runAsNonRoot: true
           runAsUser: 1001
@@ -37,20 +37,65 @@ spec:
           capabilities:
             drop:
               - ALL
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         ports:
           - containerPort: 8080
-        # env:
-        #   - name: POSTGRES_USER
-        #     valueFrom:
-        #       secretKeyRef:
-        #         name: app-credentials 
-        #         key: DB_USER
-        #   - name: POSTGRES_PASSWORD
-        #     valueFrom:
-        #       secretKeyRef:
-        #         name: app-credentials
-        #         key: DB_PASSWORD
+        env:
+          - name: STORAGE_S3_ENDPOINT
+            valueFrom:
+              secretKeyRef:
+                name: app-credentials 
+                key: STORAGE_S3_ENDPOINT
+          - name: STORAGE_S3_BUCKET
+            valueFrom:
+              secretKeyRef:
+                name: app-credentials
+                key: STORAGE_S3_BUCKET
+          - name: STORAGE_S3_ACCESS_KEY
+            valueFrom:
+              secretKeyRef:
+                name: app-credentials
+                key: STORAGE_S3_ACCESS_KEY
+          - name: STORAGE_S3_SECRET_KEY
+            valueFrom:
+              secretKeyRef:
+                name: app-credentials
+                key: STORAGE_S3_SECRET_KEY
+          - name: SPRING_DATASOURCE_URL
+            valueFrom:
+              secretKeyRef:
+                name: app-credentials
+                key: SPRING_DATASOURCE_URL
+          - name: SPRING_DATASOURCE_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: app-credentials
+                key: SPRING_DATASOURCE_USERNAME
+          - name: SPRING_DATASOURCE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: app-credentials
+                key: SPRING_DATASOURCE_PASSWORD
+          - name: SPRING_PROFILES_ACTIVE
+            valueFrom:
+              configMapKeyRef:
+                name: hexlet-project-config
+                key: SPRING_PROFILES_ACTIVE
+          - name: JAVA_OPTS
+            valueFrom:
+              configMapKeyRef:
+                name: hexlet-project-config
+                key: JAVA_OPTS
+          - name: MANAGEMENT_SERVER_PORT
+            valueFrom:
+              configMapKeyRef:
+                name: hexlet-project-config
+                key: MANAGEMENT_SERVER_PORT
+          - name: STORAGE_S3_REGION
+            valueFrom:
+              configMapKeyRef:
+                name: hexlet-project-config
+                key: STORAGE_S3_REGION
         lifecycle:
             preStop:
               exec:
