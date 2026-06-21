@@ -8,6 +8,7 @@ spec:
     app: hexlet-application
   ports:
     - protocol: TCP
-      port: 80
-      targetPort: 80
+      port: 8080
+      targetPort: 8080
+      name: http
   type: ClusterIP

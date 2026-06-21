@@ -7,7 +7,7 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: hexlet-project
+      app: hexlet-application
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -16,7 +16,7 @@ spec:
   template:
     metadata:
       labels:
-        app: hexlet-project
+        app: hexlet-application
     spec:
       serviceAccountName: my-service-account
       terminationGracePeriodSeconds: 45
