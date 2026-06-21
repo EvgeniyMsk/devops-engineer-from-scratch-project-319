@@ -11,53 +11,37 @@ resource "yandex_lockbox_secret_version" "app_secrets_v1" {
     key        = "docker_oauth_token"
     text_value = var.docker_oauth_token
   }
-  # entries {
-  #   key        = "DB_HOST"
-  #   text_value = yandex_mdb_postgresql_cluster.postgresql_cluster.host[0].fqdn
-  # }
-
-  # entries {
-  #   key        = "DB_PORT"
-  #   text_value = var.postgresql_port
-  # }
-
-  # entries {
-  #   key        = "DB_NAME"
-  #   text_value = yandex_mdb_postgresql_database.postgresql_database.name
-  # }
-
-  # entries {
-  #   key        = "DB_USER"
-  #   text_value = yandex_mdb_postgresql_user.postgresql_user.name
-  # }
-
-  # entries {
-  #   key        = "DB_PASSWORD"
-  #   text_value = yandex_mdb_postgresql_user.postgresql_user.password
-  # }
-
   entries {
-    key        = "S3_BUCKET"
-    text_value = yandex_storage_bucket.iam_bucket.bucket
+    key        = "STORAGE_S3_ENDPOINT"
+    text_value = local.s3_endpoint
   }
-
   entries {
-    key        = "S3_ACCESS_KEY"
-    text_value = yandex_iam_service_account_static_access_key.iam_bucket_account_key.access_key
-  }
-
-  entries {
-    key        = "S3_SECRET_KEY"
+    key        = "STORAGE_S3_SECRET_KEY"
     text_value = yandex_iam_service_account_static_access_key.iam_bucket_account_key.secret_key
   }
-
   entries {
-    key        = "S3_ENDPOINT"
-    text_value = "https://storage.yandexcloud.net"
+    key        = "STORAGE_S3_ACCESS_KEY"
+    text_value = yandex_iam_service_account_static_access_key.iam_bucket_account_key.access_key
+  }
+  entries {
+    key        = "STORAGE_S3_BUCKET"
+    text_value = yandex_storage_bucket.iam_bucket.bucket
+  }
+  entries {
+    key        = "SPRING_DATASOURCE_URL"
+    text_value = var.spring_datasource_url
+  }
+  entries {
+    key        = "SPRING_DATASOURCE_USERNAME"
+    text_value = var.spring_datasource_username
+  }
+  entries {
+    key        = "SPRING_DATASOURCE_PASSWORD"
+    text_value = var.spring_datasource_password
   }
 
   depends_on = [
-    # yandex_mdb_postgresql_database.postgresql_database,
+    yandex_iam_service_account_static_access_key.iam_bucket_account_key,
     yandex_storage_bucket.iam_bucket,
   ]
 }

@@ -63,3 +63,45 @@ variable "docker_oauth_token" {
   type        = string
   sensitive   = true
 }
+
+variable "storage_s3_endpoint" {
+  description = "Endpoint для S3"
+  type        = string
+  default     = "https://storage.yandexcloud.net"
+}
+
+# variable "storage_s3_access_key" {
+#   description = "Access key для S3"
+#   type        = string
+#   sensitive   = true
+# }
+
+# variable "storage_s3_secret_key" {
+#   description = "Secret key для S3"
+#   type        = string
+#   sensitive   = true
+# }
+
+variable "storage_s3_bucket" {
+  description = "Имя S3-бакета"
+  type        = string
+  default     = "hexlet-bucket"
+}
+
+variable "spring_datasource_url" {
+  description = "URL для подключения к PostgreSQL"
+  type        = string
+  default     = "jdbc:postgresql://138.16.178.207:5432/bulletins"
+}
+
+variable "spring_datasource_username" {
+  description = "Имя пользователя PostgreSQL"
+  type        = string
+  default     = "postgres"
+}
+
+variable "spring_datasource_password" {
+  description = "Пароль пользователя PostgreSQL"
+  type        = string
+  sensitive   = true
+} 
