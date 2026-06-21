@@ -1,5 +1,5 @@
 resource "yandex_storage_bucket" "iam_bucket" {
-  bucket    = "hexlet-bucket"
+  bucket    = var.storage_s3_bucket
   folder_id = var.folder_id
 
   lifecycle {

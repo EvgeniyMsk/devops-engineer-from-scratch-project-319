@@ -39,7 +39,7 @@ EOT
 
   postgresql_connection_string = "postgresql://${var.postgresql_user}:${urlencode(var.postgresql_password)}@${yandex_mdb_postgresql_cluster.postgresql_cluster.host[0].fqdn}:${var.postgresql_port}/${var.postgresql_database}?sslmode=require"
 
-  s3_endpoint = "https://storage.yandexcloud.net"
+  s3_endpoint = var.storage_s3_endpoint
 }
 
 output "kubeconfig" {

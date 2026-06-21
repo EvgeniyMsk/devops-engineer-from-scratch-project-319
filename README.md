@@ -1,7 +1,6 @@
 # DevOps Engineer from Scratch — инфраструктура в Yandex Cloud
 
-[![Actions Status](https://github.com/EvgeniyMsk/devops-engineer-from-scratch-project-319/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/EvgeniyMsk/devops-engineer-from-scratch-project-319/actions)
-[![Validate](https://github.com/EvgeniyMsk/devops-engineer-from-scratch-project-319/actions/workflows/validate.yml/badge.svg)](https://github.com/EvgeniyMsk/devops-engineer-from-scratch-project-319/actions/workflows/validate.yml)
+[![Hexlet Check](https://github.com/EvgeniyMsk/devops-engineer-from-scratch-project-319/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/EvgeniyMsk/devops-engineer-from-scratch-project-319/actions/workflows/hexlet-check.yml)
 
 **Приложение:** [https://k8s.devops-campus.ru/](https://k8s.devops-campus.ru/)
 
@@ -164,7 +163,7 @@ make helm-history
 make helm-rollback              # или REVISION=3 make helm-rollback
 ```
 
-CI: workflow [validate.yml](.github/workflows/validate.yml) проверяет `terraform fmt/validate` и `helm lint/template`. Опциональный деплой — [helm-deploy.yml](.github/workflows/helm-deploy.yml) (ручной запуск).
+**CI:** [hexlet-check.yml](.github/workflows/hexlet-check.yml) — автотесты Hexlet ([Actions](https://github.com/EvgeniyMsk/devops-engineer-from-scratch-project-319/actions/workflows/hexlet-check.yml)). Локально: `make fmt validate helm-lint`. Дополнительные workflows: [validate.yml](.github/workflows/validate.yml), [helm-deploy.yml](.github/workflows/helm-deploy.yml) (ручной деплой).
 
 ### Docker Registry (cr.yandex)
 
@@ -306,7 +305,7 @@ Actuator health: порт **9090** (`/actuator/health`).
 
 ## Мониторинг (Yandex Cloud)
 
-Подробная инструкция: [docs/monitoring.md](docs/monitoring.md). Скриншоты — в [docs/screenshots/](docs/screenshots/).
+Подробная инструкция: [docs/monitoring.md](docs/monitoring.md). Скриншоты — в [screenshots/](screenshots/).
 
 | Сервис | Что смотреть | Как открыть |
 |--------|--------------|-------------|
@@ -339,9 +338,9 @@ make apply-retry
 ├── Makefile
 ├── requirements.txt                # чеклист учебного проекта Hexlet
 ├── docker-compose.yaml
+├── screenshots/                    # скриншоты мониторинга и логов (README)
 ├── docs/
-│   ├── monitoring.md               # метрики, алерты, Fluent Bit
-│   └── screenshots/                # скриншоты дашбордов (README)
+│   └── monitoring.md               # метрики, алерты, Fluent Bit
 ├── .github/workflows/
 │   ├── hexlet-check.yml
 │   ├── validate.yml                # terraform fmt/validate, helm lint
