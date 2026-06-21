@@ -92,4 +92,4 @@ variable "spring_datasource_password" {
   description = "Пароль пользователя PostgreSQL"
   type        = string
   sensitive   = true
-}
+} 
