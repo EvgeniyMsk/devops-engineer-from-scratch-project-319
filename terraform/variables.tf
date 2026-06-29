@@ -13,13 +13,11 @@ variable "zone" {
 variable "home_ip" {
   description = "IP адрес домашнего компьютера"
   type        = string
-  default     = "176.193.106.54/32"
 }
 
 variable "office_ip" {
   description = "IP адрес офиса"
   type        = string
-  default     = "178.177.19.99/32"
 }
 
 variable "postgresql_user" {
